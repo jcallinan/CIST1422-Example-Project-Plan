@@ -1,0 +1,12 @@
+{
+  "name": "cist1422-example-project-plan",
+  "version": "1.0.0",
+  "description": "This repository is an **example** of the Project Plan part of the *Game Design Document and Project Plan* assignment. The game itself is never built here — the point is to show what a good plan looks like in GitHub Projects so you can build your own.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
