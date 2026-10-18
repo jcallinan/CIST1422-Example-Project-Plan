@@ -27,6 +27,21 @@ The target feeling is **Challenge**, with a touch of **Fantasy**: the player sho
 
 **How the layers connect:** draining fuel plus too many lamps to watch (mechanics) forces triage (dynamics), and constant triage is what makes the night feel like a challenge (aesthetics). If playtesters feel bored, fuel drains too slowly. If they feel helpless, ships come too often. Both are tuning numbers in section 7, not new features.
 
+## 3. Core gameplay loop
+
+Every 20 seconds or so, the player runs through the same four steps, and each ship that passes judges how well they did.
+
+&#91;embedded content: core gameplay loop · 4 steps, ship outcomes\]
+
+1. **Check the coast:** which lamp is lowest, and which ship arrives next?
+2. **Run to a lamp:** pick a route around the rocks.
+3. **Hold E to refuel:** 25 fuel per second from the oil can.
+4. **Refill the oil can** at the lighthouse or an oil barrel, only when the can runs low.
+
+Meanwhile a ship passes every 12 seconds: a lit lamp saves it (+100 points), a dark lamp wrecks it (−1 life).
+
+When the oil can still has fuel, the keeper skips step 4 and goes straight back to checking the coast. The loop never lets up, because a full lamp lasts only 25 seconds and the lap takes 20.
+
 ## 4. Controls
 
 Keyboard only, playable with one hand on WASD; the mouse is used only in menus.
