@@ -2,8 +2,8 @@
   setup-example-project.ps1
   Builds the "Lantern Keeper" example GitHub Project for CIST 1422:
     - pushes the README (sample GDD summary + how-to for students) to YOUR EXISTING repo
-    - labels, five dated milestones, and ~26 issues with acceptance criteria
-    - a GitHub Project (v2) linked to the repo, with Scope / Estimate / Target date
+    - labels, five dated milestones, and 28 issues with acceptance criteria
+    - a GitHub Project (v2) linked to the repo, with Scope / Estimate / Owner / Target date
       fields filled in and a realistic mix of Todo / In Progress / Done
 
   Requirements: GitHub CLI (https://cli.github.com) and git, logged in as the repo owner.
@@ -12,8 +12,8 @@
       .\setup-example-project.ps1
 
   The repo is detected from the folder you run it in (its GitHub remote).
-  Safe to re-run: anything that already exists (milestones, the project, issues
-  with the same title) is reused or skipped instead of duplicated.
+  Safe to re-run: existing milestones, the project, and issues with the same title
+  are reused (their project fields are refreshed) instead of duplicated.
 
   Afterwards (GitHub's API can't create views — about one minute in the browser):
     1. Open the project, rename the default view to "Board", and switch its layout to Board.
@@ -56,10 +56,10 @@ $Labels = @(
 
 # Status: Todo / In Progress / Done.  Scope: Must / Should / Nice.
 $Tasks = @(
-  @{ T='Write the Game Design Document'; L='docs'; S='Must'; E=4; M='Plan Approved'; St='Done'
+  @{ T='Write the Game Design Document'; O='J'; L='docs'; S='Must'; E=4; M='Plan Approved'; St='Done'
      D='Describe Lantern Keeper using MDA: concept, core loop, controls, look and feel, win/lose conditions, and technical scope.'
      AC=@('At least 500 words','Covers every section listed in the assignment','Includes a sketch of the coastline level') }
-  @{ T='Build the project board and task breakdown'; L='docs'; S='Must'; E=2; M='Plan Approved'; St='Done'
+  @{ T='Build the project board and task breakdown'; O='M'; L='docs'; S='Must'; E=2; M='Plan Approved'; St='Done'
      D='Turn the GDD into issues with estimates, scope tiers, milestones, and acceptance criteria.'
      AC=@('Every Must-have feature has at least one issue','No task estimated over 6 hours','Milestones have due dates') }
   @{ T='Set up the Unity project and Git repository'; L='tech'; S='Must'; E=1; M='Plan Approved'; St='Done'
@@ -100,9 +100,12 @@ $Tasks = @(
   @{ T='Storms that ramp up difficulty'; L='gameplay'; S='Should'; E=4; M='Alpha'; St='Todo'
      D='Every two minutes a storm wave increases fuel drain and ship frequency.'
      AC=@('At least three escalating waves','A visual warning before each storm') }
-  @{ T='Replace the greybox with pixel art'; L='art'; S='Should'; E=6; M='Alpha'; St='Todo'
-     D='16x16 tiles for the coast plus sprites for the keeper, lamps, ships, and barrels. Use a credited free pack if time is short.'
-     AC=@('Consistent palette (dark blue and amber)','Keeper has a 4-frame walk cycle') }
+  @{ T='Pixel art: coastline tiles'; L='art'; S='Should'; E=3; M='Alpha'; St='Todo'
+     D='16x16 tiles for the coast, cliffs, water, and the lighthouse, painted into a Tilemap. Use a credited free pack if time is short.'
+     AC=@('Consistent palette (dark blue and amber)','Replaces every greybox shape in the level') }
+  @{ T='Pixel art: keeper, lamp, ship, and barrel sprites'; L='art'; S='Should'; E=3; M='Alpha'; St='Todo'
+     D='Sprites for every moving or interactive object, matching the tile palette.'
+     AC=@('Keeper has a 4-frame walk cycle','Lamp has lit and dark versions')}
 
   @{ T='Sound effects'; L='audio'; S='Should'; E=3; M='Beta'; St='Todo'
      D='Footsteps, refueling, ship horn, wreck, and UI clicks.'
@@ -110,10 +113,10 @@ $Tasks = @(
   @{ T='Background music and volume settings'; L='audio'; S='Nice'; E=2; M='Beta'; St='Todo'
      D='A looping storm track with a volume slider in the pause menu.'
      AC=@('Volume setting persists between scenes') }
-  @{ T='Playtest with three classmates'; L='testing'; S='Must'; E=2; M='Beta'; St='Todo'
+  @{ T='Playtest with three classmates'; O='J'; L='testing'; S='Must'; E=2; M='Beta'; St='Todo'
      D='Watch three people play without helping them, then log every problem as a new issue.'
      AC=@('At least three playtest sessions recorded in comments','Every problem found becomes an issue labeled testing') }
-  @{ T='Fix the top playtest issues'; L='testing'; S='Must'; E=4; M='Beta'; St='Todo'
+  @{ T='Fix the top playtest issues'; O='M'; L='testing'; S='Must'; E=4; M='Beta'; St='Todo'
      D='Fix the most serious problems found during playtesting.'
      AC=@('Every crash and blocker fixed','Remaining issues triaged into Should or Nice') }
   @{ T='Sprint ability'; L='gameplay'; S='Nice'; E=3; M='Beta'; St='Todo'
@@ -126,21 +129,29 @@ $Tasks = @(
   @{ T='Credits screen with asset attribution'; L='ui'; S='Must'; E=1; M='Final Build'; St='Todo'
      D='List the team and every third-party asset with its license.'
      AC=@('Reachable from the main menu','Every asset in the project is listed') }
-  @{ T='Final presentation slides'; L='docs'; S='Must'; E=2; M='Final Build'; St='Todo'
+  @{ T='Final presentation slides'; O='J'; L='docs'; S='Must'; E=2; M='Final Build'; St='Todo'
      D='A short deck: pitch, a demo, what changed from the GDD and why, and lessons learned.'
      AC=@('Fits in 5 minutes','Shows the final board next to the original plan') }
-  @{ T='One-minute gameplay trailer'; L='docs'; S='Nice'; E=2; M='Final Build'; St='Todo'
+  @{ T='One-minute gameplay trailer'; O='J'; L='docs'; S='Nice'; E=2; M='Final Build'; St='Todo'
      D='Record and trim gameplay footage into a short trailer.'
      AC=@('60 seconds or less','Ends with the title and team names') }
 
-  @{ T='RISK: Ship movement may take longer than planned'; L='risk'; S='Must'; E=1; M='Prototype'; St='Todo'
+  @{ T='RISK: Ship movement may take longer than planned'; O='M'; L='risk'; S='Must'; E=1; M='Prototype'; St='Todo'
      D='Steering ships around rocks could be harder than estimated. Fallback: ships follow fixed paths. Decide by Nov 3.'
      AC=@('Decision recorded in a comment by Nov 3') }
-  @{ T='RISK: Pixel art may not be finished in time'; L='risk'; S='Should'; E=1; M='Alpha'; St='Todo'
+  @{ T='RISK: Pixel art may not be finished in time'; O='J'; L='risk'; S='Should'; E=1; M='Alpha'; St='Todo'
      D='Hand-made art is slow. Fallback: keep the greybox and use a credited free asset pack.'
      AC=@('Decision recorded in a comment by Nov 17') }
+  @{ T='RISK: Midterms and Thanksgiving week cut into work time'; O='M'; L='risk'; S='Must'; E=1; M='Alpha'; St='Todo'
+     D='Both teammates have midterms in early November, and Thanksgiving week falls right before Alpha. Plan: finish the Must-have tasks before Nov 20 and cut Should-have tasks first if behind.'
+     AC=@('Must-have progress reviewed at the Prototype check-in on Nov 10','Any cuts recorded in a comment')}
 )
 $ScopeName = @{ Must = 'Must have'; Should = 'Should have'; Nice = 'Nice to have' }
+
+# Example two-person team. Owner comes from the task's O= value, or from its label.
+$Team = @{ M = 'Maya - programming'; J = 'Jordan - art and UI' }
+$OwnerByLabel = @{ gameplay = 'M'; tech = 'M'; art = 'J'; audio = 'J'; ui = 'J'; docs = 'J'; testing = 'J'; risk = 'M' }
+function OwnerOf($t) { if ($t.O) { $Team[$t.O] } else { $Team[$OwnerByLabel[$t.L]] } }
 
 # ---------- 0. Preflight ----------
 Write-Host 'Checking GitHub CLI login...' -ForegroundColor Cyan
@@ -229,34 +240,38 @@ $fields = (Invoke-GhJson project field-list $num --owner $Owner --limit 50 --for
 $fieldNames = @($fields | ForEach-Object { $_.name })
 if ($fieldNames -notcontains 'Scope') { Invoke-Gh project field-create $num --owner $Owner --name 'Scope' --data-type SINGLE_SELECT --single-select-options 'Must have,Should have,Nice to have' | Out-Null }
 if ($fieldNames -notcontains 'Estimate (hrs)') { Invoke-Gh project field-create $num --owner $Owner --name 'Estimate (hrs)' --data-type NUMBER | Out-Null }
+if ($fieldNames -notcontains 'Owner') { Invoke-Gh project field-create $num --owner $Owner --name 'Owner' --data-type SINGLE_SELECT --single-select-options "$($Team.M),$($Team.J)" | Out-Null }
 if ($fieldNames -notcontains 'Target date') { Invoke-Gh project field-create $num --owner $Owner --name 'Target date' --data-type DATE | Out-Null }
 
 $fields = (Invoke-GhJson project field-list $num --owner $Owner --limit 50 --format json).fields
 function FieldId($name) { ($fields | Where-Object { $_.name -eq $name }).id }
 function OptionId($field, $opt) { (($fields | Where-Object { $_.name -eq $field }).options | Where-Object { $_.name -eq $opt }).id }
-$statusId = FieldId 'Status'; $scopeId = FieldId 'Scope'; $estId = FieldId 'Estimate (hrs)'; $dateId = FieldId 'Target date'
+$statusId = FieldId 'Status'; $scopeId = FieldId 'Scope'; $estId = FieldId 'Estimate (hrs)'; $dateId = FieldId 'Target date'; $ownerId = FieldId 'Owner'
 
 # ---------- 4. Issues -> project items ----------
 $bodyFile = Join-Path $work 'body.md'
-$existingIssues = @((Invoke-GhJson issue list --repo $FullRepo --state all --limit 500 --json title) | ForEach-Object { $_.title })
+$existingIssues = @{}
+foreach ($x in (Invoke-GhJson issue list --repo $FullRepo --state all --limit 500 --json 'title,url' | ForEach-Object { $_ })) { if ($x.title) { $existingIssues[$x.title] = $x.url } }
 $i = 0
 foreach ($t in $Tasks) {
   $i++
-  if ($existingIssues -contains $t.T) { Write-Host ("[{0}/{1}] {2} (already exists, skipped)" -f $i, $Tasks.Count, $t.T); continue }
-  Write-Host ("[{0}/{1}] {2}" -f $i, $Tasks.Count, $t.T)
+  $isNew = -not $existingIssues.ContainsKey($t.T)
+  Write-Host ("[{0}/{1}] {2}{3}" -f $i, $Tasks.Count, $t.T, $(if ($isNew) { '' } else { ' (exists - updating fields)' }))
   $body = "## Description`n$($t.D)`n`n## Acceptance criteria`n" + (($t.AC | ForEach-Object { "- [ ] $_" }) -join "`n") +
-          "`n`n**Scope:** $($ScopeName[$t.S]) | **Estimate:** $($t.E) hrs | **Milestone:** $($t.M)"
+          "`n`n**Scope:** $($ScopeName[$t.S]) | **Estimate:** $($t.E) hrs | **Milestone:** $($t.M) | **Owner:** $(OwnerOf $t)"
   if ($t.St -eq 'Done') { $body = $body -replace '- \[ \]', '- [x]' }
   Set-Content -Path $bodyFile -Value $body -Encoding utf8
 
-  $url = (Invoke-Gh issue create --repo $FullRepo --title $t.T --body-file $bodyFile --label $t.L --milestone $t.M) | Select-Object -Last 1
+  if ($isNew) { $url = (Invoke-Gh issue create --repo $FullRepo --title $t.T --body-file $bodyFile --label $t.L --milestone $t.M) | Select-Object -Last 1 }
+  else { $url = $existingIssues[$t.T] }
   $item = Invoke-GhJson project item-add $num --owner $Owner --url $url --format json
 
   Invoke-Gh project item-edit --id $item.id --project-id $proj.id --field-id $statusId --single-select-option-id (OptionId 'Status' $t.St) | Out-Null
   Invoke-Gh project item-edit --id $item.id --project-id $proj.id --field-id $scopeId  --single-select-option-id (OptionId 'Scope' $ScopeName[$t.S]) | Out-Null
   Invoke-Gh project item-edit --id $item.id --project-id $proj.id --field-id $estId    --number $t.E | Out-Null
   Invoke-Gh project item-edit --id $item.id --project-id $proj.id --field-id $dateId   --date $Milestones[$t.M].Due | Out-Null
-  if ($t.St -eq 'Done') { Invoke-Gh issue close $url --reason completed | Out-Null }
+  Invoke-Gh project item-edit --id $item.id --project-id $proj.id --field-id $ownerId  --single-select-option-id (OptionId 'Owner' (OwnerOf $t)) | Out-Null
+  if ($isNew -and $t.St -eq 'Done') { Invoke-Gh issue close $url --reason completed | Out-Null }
 }
 
 Remove-Item -Recurse -Force $work
