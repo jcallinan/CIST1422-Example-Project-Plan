@@ -147,13 +147,25 @@ Write-Host 'Checking GitHub CLI login...' -ForegroundColor Cyan
 & gh auth status | Out-Null
 if ($LASTEXITCODE -ne 0) { throw 'Run "gh auth login" first.' }
 
+# Older GitHub CLI versions are missing some of the project commands this script uses.
+$prevEap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+$linkHelp = (& gh project link --help 2>&1 | Out-String)
+$ErrorActionPreference = $prevEap
+if ($linkHelp -notmatch '--owner') {
+  $ver = (& gh --version | Select-Object -First 1)
+  throw "Your GitHub CLI ($ver) is too old for this script. Update it with:  winget upgrade --id GitHub.cli   then open a new PowerShell window and run the script again."
+}
+
+$prevEap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
 $RepoRoot = (& git rev-parse --show-toplevel 2>$null)
+$ErrorActionPreference = $prevEap
 if ($LASTEXITCODE -ne 0 -or -not $RepoRoot) { throw 'Run this script from inside your cloned repo folder.' }
 $RepoRoot = (Resolve-Path $RepoRoot).Path
 Push-Location $RepoRoot
 try { $repoInfo = Invoke-GhJson repo view --json 'nameWithOwner,url' } finally { Pop-Location }
 $FullRepo = $repoInfo.nameWithOwner
 $Owner = $FullRepo.Split('/')[0]
+$RepoName = $FullRepo.Split('/')[1]
 Write-Host "Using repo $FullRepo" -ForegroundColor Cyan
 
 & gh project list --owner $Owner --limit 1 | Out-Null
@@ -207,7 +219,10 @@ $proj = (Invoke-GhJson project list --owner $Owner --limit 100 --format json).pr
 if ($proj) { Write-Host "  Reusing existing project #$($proj.number)" }
 else { $proj = Invoke-GhJson project create --owner $Owner --title $ProjectTitle --format json }
 $num = $proj.number
-& gh project link $num --owner $Owner --repo $FullRepo 2>$null | Out-Null   # harmless if already linked
+# Link the project to the repo (harmless if it's already linked, so errors are ignored here).
+$prevEap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+& gh project link $num --owner $Owner --repo $RepoName 2>&1 | Out-Null
+$ErrorActionPreference = $prevEap
 Invoke-Gh project edit $num --owner $Owner --visibility PUBLIC --description 'Example plan for the CIST 1422 Game Design Document and Project Plan assignment' | Out-Null
 
 $fields = (Invoke-GhJson project field-list $num --owner $Owner --limit 50 --format json).fields
