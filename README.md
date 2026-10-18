@@ -8,7 +8,7 @@ Open the **Projects** tab of this repository to see the board.
 
 ## The game (one-paragraph GDD summary)
 
-**Lantern Keeper** is a 2D top-down game for Windows built in Unity. You are a lighthouse keeper on a rocky coast during a storm. Ships pass through the night, and every coastal lamp burns through its oil. Run between lamps, refuel them, and keep the coast lit until dawn. If a ship passes a dark lamp, it wrecks on the rocks and you lose a life. Lose three lives and the night is over.
+**Lantern Keeper** is a two-person team project: a 2D top-down game for Windows built in Unity. You are a lighthouse keeper on a rocky coast during a storm. Ships pass through the night, and every coastal lamp burns through its oil. Run between lamps, refuel them, and keep the coast lit until dawn. If a ship passes a dark lamp, it wrecks on the rocks and you lose a life. Lose three lives and the night is over.
 
 - **MDA aesthetic target:** Challenge and a little Fantasy. The player should feel frantic but in control.
 - **Core loop:** Check which lamp is lowest → run to it → refuel → watch for incoming ships → repeat.
@@ -20,7 +20,7 @@ Open the **Projects** tab of this repository to see the board.
 | Tier | What's in it |
 |---|---|
 | **Must have** | Movement, lamps with draining fuel, refueling, ships that wreck at dark lamps, lives and a dawn timer, HUD, menus, a Windows build |
-| **Should have** | Oil barrel pickups, storms that ramp difficulty, real pixel art, sound effects |
+| **Should have** | Oil barrel pickups, storms that ramp difficulty, pixel art (tiles and sprites), sound effects |
 | **Nice to have** | Music and volume settings, a sprint upgrade, a trailer |
 
 If time runs short, the Nice-to-have items get cut first, then Should-have. The Must-have tier alone is still a complete, playable game.
@@ -35,12 +35,22 @@ If time runs short, the Nice-to-have items get cut first, then Should-have. The 
 | Beta | Tue Dec 1 | Content complete, playtested, bug fixing |
 | Final Build | Tue Dec 8 | Windows build, presentation, credits |
 
+## Roles
+
+| Teammate | Owns |
+|---|---|
+| **Maya** (programming) | Gameplay and technical tasks: movement, lamps, ships, storms, builds, fixing playtest bugs |
+| **Jordan** (art and UI) | Art, UI, and audio: tiles, sprites, HUD, menus, sound, the GDD, playtesting, presentation |
+
+Every issue has exactly one owner (the **Owner** field on the board). Maya has about 37 hours of tasks and Jordan about 31. In a real team, also add each teammate as a repo collaborator and use GitHub's **Assignees**, so each person can filter the board to "my tasks".
+
 ## Risks
 
 Risks are tracked as issues labeled `risk` so they stay visible on the board:
 
 1. **Ship movement may take longer than expected.** Fallback: ships follow fixed paths instead of steering.
 2. **Pixel art is time-consuming.** Fallback: keep the greybox and use a free asset pack (credited on the credits screen).
+3. **Midterms and Thanksgiving week cut into work time.** Plan: finish the Must-have tasks before Nov 20 and cut Should-have tasks first if behind.
 
 ---
 
@@ -51,6 +61,7 @@ Risks are tracked as issues labeled `risk` so they stay visible on the board:
 | **Status** | Todo → In Progress → Done. Drag cards across the Board view. |
 | **Scope** | Must have / Should have / Nice to have |
 | **Estimate (hrs)** | A guess at the hours needed. Tasks over ~4 hours should be split up. |
+| **Owner** | The one teammate responsible for the task |
 | **Milestone** | Which checkpoint the task belongs to |
 | **Target date** | Drives the Roadmap view |
 | **Labels** | The area of work: `gameplay`, `ui`, `art`, `audio`, `tech`, `testing`, `docs`, `risk` |
@@ -62,7 +73,7 @@ Every issue has **acceptance criteria**, a checklist that defines "done." If you
 1. Create a GitHub repo for your game (use the **Unity** `.gitignore` template).
 2. Go to your profile → **Projects** → **New project** → choose the **Board** template.
 3. In the project's **Settings**, link it to your repo.
-4. Add custom fields: **Scope** (single select), **Estimate (hrs)** (number), **Target date** (date).
+4. Add custom fields: **Scope** (single select), **Estimate (hrs)** (number), **Target date** (date), and for teams **Owner** (single select) or use Assignees.
 5. In your repo, open **Issues → Milestones** and create your four or five milestones with due dates.
 6. Create one issue per task. Give each one a label, a milestone, and acceptance criteria, then add it to the project.
 7. Add a **Roadmap** view (grouped by Milestone) and a **Table** view (grouped by Scope).
